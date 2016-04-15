@@ -1,0 +1,23 @@
+public class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if(s.length()<=1){
+            return s.length();
+        } else {
+            String temp = "";
+            int max =0;
+            for(int i = 0; i<s.length(); i++){
+                temp=s.substring(i,i+1);
+                for(int j = i+1; j<s.length();j++){
+                    String c = s.substring(j,j+1);
+                    if(!temp.contains(c)){
+                        temp=temp+c;
+                        max=Math.max(max,temp.length());
+                    } else{
+                        j=s.length()+1;
+                    }
+                }
+            }
+            return max;
+        }
+    }
+}
