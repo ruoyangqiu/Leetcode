@@ -1,0 +1,12 @@
+//数字很大的时候，这道题会有runtime error，然后机器的expected value也不对
+public class Solution {
+    public int addDigits(int num) {
+        if(num%9==0&&num!=0){
+            return 9;
+        } else {
+            int sum = num%9;
+            return sum;
+        }
+        
+    }
+}
