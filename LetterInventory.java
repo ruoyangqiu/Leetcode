@@ -4,6 +4,11 @@ import java.util.Arrays;
 //1133074
 //CSE 143 B Section BE
 //Homework 1 LetterInventory
+//The constructor for the class takes a String and computes how many of each letter are in the String. 
+//This is the information the object keeps track of (how many a’s, how many b’s, etc).  
+//It ignores the case of the letters and ignores anything that is not an alphabetic character 
+//(e.g., it ignores punctuation characters, digits and anything else that is not a letter).
+
 
 public class LetterInventory {
 	private char[] inventory; //array store the character of the inventory in alphabetic order
@@ -14,7 +19,7 @@ public class LetterInventory {
 	//constructor of the inventory with a specific input string data 
 	public LetterInventory(String data) {
 		size = 0;
-		counts = new int[Character.MAX_VALUE]; //the location of each character is the NO. of it in total character
+		counts = new int[Character.MAX_VALUE]; //the location of each character is the NO. of it in total character？//这个长度的array是否有必要？		
 		input = ignore(data); //delete the non-alphabetic characters
 		inventory = toChar(); //store the letters into the array and sort them in alphabetic order
 	}
@@ -43,7 +48,7 @@ public class LetterInventory {
 			} else if(value < counts[letter]){
 				size = size - counts[letter] + value;
 				counts[letter] = value;
-				String sub = "" + letter;
+				String sub = "" + letter;  //我觉得这个东西有点傻，有没有更好的办法可以做这个替换的作用？ 				
 				input = input.replace(sub, "");
 				for( int i = 0; i < value; i++){
 					input += letter;
@@ -123,6 +128,7 @@ public class LetterInventory {
 		}
 		return data;
 	}
+	
 	//convert String to a sorted char array 
 	private  char[] toChar() {
 		char[] letter = new char[size]; 
