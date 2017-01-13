@@ -1,109 +1,91 @@
 import java.util.Arrays;
 
-//Ruoyang Qiu
-//1133074
-//CSE 143 B Section BE
-//Homework 1 LetterInventory
-//The constructor for the class takes a String and computes how many of each letter are in the String. 
-//This is the information the object keeps track of (how many a’s, how many b’s, etc).  
-//It ignores the case of the letters and ignores anything that is not an alphabetic character 
-//(e.g., it ignores punctuation characters, digits and anything else that is not a letter).
-
+// Ruoyang Qiu
+// 1133074
+// CSE 143 B Section BE
+// Homework 1 LetterInventory
+// In this class, I construct an inventory that can store the content of the input string
+// Additionally, this program can also compute how many letters are in this inventory.
+// It ignores the case of the letters and ignores anything that is not an alphabetic character 
+// (e.g., it ignores punctuation characters, digits and anything else that is not a letter).
 
 public class LetterInventory {
-	private char[] inventory; //array store the character of the inventory in alphabetic order
-	private int[] counts; //count how many counts of the character are in the inventory
-	private String input; //the input letters of the inventory
-	private  int size; //the total counts
+	private int[] counts; // array store the letters in the inventory
+	private String input; // the input without non-alphabetic characters
+	private  int size; // the total counts
 	
-	//constructor of the inventory with a specific input string data 
+	// constructor of the inventory with a specific input string data 
 	public LetterInventory(String data) {
-		size = 0;
-		counts = new int[Character.MAX_VALUE]; //the location of each character is the NO. of it in total character？//这个长度的array是否有必要？		
-		input = ignore(data); //delete the non-alphabetic characters
-		inventory = toChar(); //store the letters into the array and sort them in alphabetic order
+		input = "";
+		counts = new int[26]; // the location of each character is the NO. of it in alphabet
+		build(data); // delete the non-alphabetic characters
+		size = countTotal();
 	}
 	
-	//count how many given letters are in the inventory
+	// count how many given letters are in the inventory
 	public int get(char letter){
 		letter = Character.toLowerCase(letter);
 		if(letter < 'a' || letter > 'z'){
-			//throw an IllegalArgumentException if the given letter is non-alphabetic
+			// throw an IllegalArgumentException if the given letter is non-alphabetic
 			throw new IllegalArgumentException();	
 		} else {
-			return counts[letter];
+			return counts[letter - 'a'];
 		}
 	}
 	
 	public void set(char letter, int value){
 		letter = Character.toLowerCase(letter);
 		if(letter < 'a' || letter > 'z'){
-			//throw an IllegalArgumentException if the given letter is non-alphabetic
+			// throw an IllegalArgumentException if the given letter is non-alphabetic
 			throw new IllegalArgumentException();	
 		} else if (value < 0){
+			// throw an IllegalArgumentException if the given value is negative
 			throw new IllegalArgumentException();
 		} else {
-			if (value == counts[letter]){
-				counts[letter] = value;
-			} else if(value < counts[letter]){
-				size = size - counts[letter] + value;
-				counts[letter] = value;
-				String sub = "" + letter;  //我觉得这个东西有点傻，有没有更好的办法可以做这个替换的作用？ 				
-				input = input.replace(sub, "");
-				for( int i = 0; i < value; i++){
-					input += letter;
-				}
-				inventory = toChar();
-			} else {
-				int difference = value - counts[letter];
-				size = size + difference;
-				counts[letter] = value;
-				for( int i = 0; i < difference; i++){
-					input += letter;
-				}
-				inventory = toChar();
-			}
+			int index = letter - 'a';  // the location of the letter in counts[]
+				counts[index] = value;
+				size = countTotal();
 		}
 	}
 	
-	//the total counts of letter in the inventory
+	// the total counts of letter in the inventory
 	public int size(){
 		return size;
 	}
 	
-	//check if the inventory is empty
+	// check if the inventory is empty
 	public boolean isEmpty(){
 		return size == 0;
 	}
 	
-	//convert the inventory into string, for example "apple"
-	//should have a form of [aelpp]
+	// convert the inventory into string, for example "apple"
+	// should have a form of [aelpp]
 	public String toString(){
 		String str = "[";
-		for (int i = 0; i < inventory.length; i++){
-			str += inventory[i];
+		for (int i = 0; i < counts.length; i++){
+			for (int j = 0; j < counts[i]; j++){
+				str += (char)('a'+i);
+			}
 		}
 		str += "]";
 		return str;
 	}
 	
-	//add another inventory to thid inventory
+	// add another inventory to this inventory
 	public LetterInventory add(LetterInventory other){
 		String data = input + other.toString();
 		LetterInventory result = new LetterInventory(data);
 		return result;
 	}
 	
-	//subtract another inventory to thid inventory
+	// subtract another inventory to this inventory
 	public LetterInventory subtract(LetterInventory other) {
-		String str1 = input;
-		String str2 = other.toString();
-		str2=str2.replace("[","");
-		str2=str2.replace("]","");
-		LetterInventory result = new LetterInventory(str1);
-		for (int i = 0; i < str2.length(); i++){
-			char letter = str2.charAt(i);
-			if(result.get(letter) == 0){
+		String str = other.toString();
+		LetterInventory result = new LetterInventory(input); // Initialize the result inventory
+		for (int i = 1; i < str.length() - 1; i++){
+			char letter = str.charAt(i);
+			if(result.get(letter) == 0){ 
+				// return null if the given letter in the original inventory is less than other inventory
 				return null;
 			} else {
 				result.set(letter, result.get(letter)-1);
@@ -112,31 +94,28 @@ public class LetterInventory {
 		return result;
 	}
 	
-	//delete the non-alphabetic characters
-	private  String ignore(String data){
+	// build the array to store the data
+	// get the input without the non-alphabetic characters and convert the input into lowercase
+	// for example, the input string is "How are you?", this method will convert it into
+	// "howareyou".
+	private  void build(String data){
 		data = data.toLowerCase();
-		int it = 0;
-		while(size < data.length()){
+		int it = 0; // iteration
+		while(it < data.length()){
 			if(data.charAt(it) >= 'a' && data.charAt(it) <= 'z'){
-				counts[data.charAt(it)]++;
-				size ++;
-				it++;
-			} else {
-				String ch = ""+data.charAt(it);
-				data = data.replace(ch,"" );
-			}
+				counts[data.charAt(it) - 'a']++;
+				input += data.charAt(it);
+			} 
+			it++;
 		}
-		return data;
 	}
 	
-	//convert String to a sorted char array 
-	private  char[] toChar() {
-		char[] letter = new char[size]; 
-		for(int i = 0; i < size; i++){
-			letter[i] = input.charAt(i);
+	// count the size of the inventory
+	private int countTotal(){
+		int total = 0;
+		for (int i = 0; i < counts.length; i++){
+			total += counts[i];
 		}
-		Arrays.sort(letter);
-		return letter;
+		return total;
 	}
-
 }
