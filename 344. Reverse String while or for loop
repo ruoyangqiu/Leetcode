@@ -1,0 +1,18 @@
+public class Solution {
+    public String reverseString(String s) {
+        if(s.length() <= 1){
+            return s;
+        }
+        char[] str = s.toCharArray();
+        int start = 0;
+        int end = str.length - 1;
+        while(start < end){
+            char temp = str[start];
+            str[start] = str[end];
+            str[end] = temp;
+            end --;
+            start ++;
+        }
+        return new String(str);
+    }
+}
