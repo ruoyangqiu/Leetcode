@@ -1,0 +1,9 @@
+public class Solution {
+    public int distributeCandies(int[] candies) {
+        Set<Integer> result = new HashSet<Integer>();
+        for(int i = 0; i < candies.length; i++){
+            result.add(candies[i]);
+        }
+        return Math.min(result.size(), candies.length/2);
+    }
+}
