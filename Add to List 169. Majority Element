@@ -1,0 +1,24 @@
+public class Solution {
+    public int majorityElement(int[] nums) {
+        if(nums.length <= 2){   // Because the nums array always contains a majority number, thus all the numbers
+                                // in the array with the length less than 2 are the same, and they are the majority.
+            return nums[0];
+        }
+        Map<Integer, Integer> time = new HashMap<Integer, Integer>(); //map store the occurance time of every unique number in the array
+        for(int i : nums){
+            if(time.containsKey(i)){
+                time.put(i, time.get(i)+1);
+            } else {
+                time.put(i, 1);
+            }
+        }
+        int maj = 0;
+        for(int i : time.keySet()){
+            if(time.get(i) > nums.length/2){ // find the majority number
+                maj = i;
+                break;
+            }
+        }
+        return maj;
+    }
+}
