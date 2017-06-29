@@ -20,10 +20,7 @@ public class ArrayStack implements DStack {
 	// inseart the new data into the stack
 	// if the element reach the maximum size of the arra, double the array size
 	public void push(double d){
-		if(stackArray.length == size){
-			double[] temp = new double[2*stackArray.length];
-			stackArray = temp;
-		}
+		resize();
 		stackArray[size] = d;
 		size ++;
 	}
@@ -44,5 +41,15 @@ public class ArrayStack implements DStack {
 			throw new EmptyStackException();
 		}
 		return stackArray[size - 1];
+	}
+	
+	private void resize(){
+		if(stackArray.length == size){
+			double[] temp = new double[2*stackArray.length];
+			for(int i = 0; i < stackArray.length; i++){
+				temp[i] = stackArray[i];
+			}
+			stackArray = temp;
+		}
 	}
 }
