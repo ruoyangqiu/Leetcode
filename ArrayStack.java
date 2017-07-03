@@ -43,6 +43,7 @@ public class ArrayStack implements DStack {
 		return stackArray[size - 1];
 	}
 	
+	// rebuild the array if the size exceed the current array length
 	private void resize(){
 		if(stackArray.length == size){
 			double[] temp = new double[2*stackArray.length];
