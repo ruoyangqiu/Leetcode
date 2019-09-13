@@ -5,7 +5,7 @@ public class MatrixNode {
 	public MatrixNode previous;
 	public int index;
 	public int valueX;
-	public int valueY;
+	//public int valueY;
 	
 	/*
 	 * public MatrixNode() { this.next = null; this.previous = null; this.index =
