@@ -4,23 +4,26 @@ import java.util.*;
 
 public class MatrixArray {
 	
-	private MatrixNode matrix;
-	private MatrixNode tail;
+	
 	private int size;
+	private int index_of_feature[];
+	private int max_size = 100;
 	
 	
 	public MatrixArray() {
-		matrix = new MatrixNode();
-		tail = new MatrixNode();
-		tail.previous = matrix;
-		matrix.next = tail;
+		
+		index_of_feature = new int[max_size];
+		
 		size = 0;
 	}
 	
 	public void askforNextX(int x, int index) {
 		if(x != 0) {
-			addMatrixNodeX(x, index);
+			index_of_feature[size] = index;
 			size ++;
+			if(this.size > max_size * 3 / 4) {
+				expandArray();
+			}
 		}
 	}
 	
@@ -28,25 +31,20 @@ public class MatrixArray {
 		return size;
 	}
 	
-	public MatrixNode getMatrix() {
-		return matrix;
+	public int[] getArray() {
+		return this.index_of_feature;
 	}
 	
-	private void addMatrixNodeX(int x, int index) {
-		MatrixNode temp = new MatrixNode();
-		temp.previous = tail.previous;
-		temp.next = tail;
-		tail.previous.next = temp;
-		tail.previous = temp;
-		temp.index = index;
-		temp.valueX = x;
+	
+	private void expandArray() {
+		int[] temp = Arrays.copyOf(index_of_feature, max_size * 2);
+		index_of_feature = Arrays.copyOf(temp, temp.length);
+		max_size = max_size * 2;
 	}
 	
 	public void printAll() {
-		MatrixNode temp = matrix.next;
-		while(temp.next != null) {
-			System.out.print(temp.index + ": " + temp.valueX + " " );
-			temp = temp.next;
+		for(int i = 0; i <  size; i ++) {
+			System.out.print(this.index_of_feature[i] + " ");
 		}
 	}
 	

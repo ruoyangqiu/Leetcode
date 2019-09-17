@@ -27,26 +27,42 @@ public class DotProductArray {
 	
 	private static int doDot(MatrixArray x, MatrixArray y) {
 		int sum = 0;
-		MatrixNode temp1 = x.getMatrix().next;
-		MatrixNode temp2 = y.getMatrix().next;
-		while(temp1.next != null && temp2.next != null) {
-			if(temp1.index == temp2.index) {
-				sum ++;
-				temp1 = temp1.next;
-				temp2 = temp2.next;
-			} else if(temp1.index < temp2.index) {
-				temp1 = temp1.next;
-			} else {
-				temp2 = temp2.next;
+		if(y.size() > x.size()) {
+			for(int i = 0 ; i < y.size(); i ++) {
+				if(findIndex(0, x.size() - 1, x.getArray(), y.getArray()[i])) {
+					sum ++;
+				}
+			}
+		} else {
+			for(int i = 0 ; i < x.size(); i ++) {
+				if(findIndex(0, y.size() - 1, y.getArray(), x.getArray()[i])) {
+					sum ++;
+				}
 			}
 		}
+		
 		return sum;
+	}
+	
+	private static boolean findIndex(int s, int e, int[] num, int target) {
+		if(s > e) {
+			return false;
+		} else {
+			int mid = (s + e) / 2;
+			if(num[mid] == target) {
+				return true;
+			} else if(num[mid] > target) {
+				return findIndex(s, mid - 1, num, target);
+			} else {
+				return findIndex(mid + 1, e, num, target);
+			}
+		}
 	}
 	
 	public static void main(String[] args) throws Exception {
 		
-		int[] num1 = generate(20);
-		int[] num2 = generate(20);
+		int[] num1 = generate(50000);
+		int[] num2 = generate(5000000);
 		MatrixArray ma1 = new MatrixArray();
 		MatrixArray ma2 = new MatrixArray();
 		for(int i = 0; i < num1.length; i++) {
@@ -55,10 +71,10 @@ public class DotProductArray {
 		for(int i = 0; i < num2.length; i++) {
 			ma2.askforNextX(num2[i], i);
 		}
-		ma1.printAll();
-		System.out.println();
-		ma2.printAll();
-		System.out.println();
+		//ma1.printAll();
+		//System.out.println();
+		//ma2.printAll();
+		//System.out.println();
 		int res = doDot(ma1, ma2);
 		System.out.println(res);
 	}
