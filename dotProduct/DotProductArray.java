@@ -27,20 +27,22 @@ public class DotProductArray {
 	
 	private static int doDot(MatrixArray x, MatrixArray y) {
 		int sum = 0;
-		if(y.size() > x.size()) {
-			for(int i = 0 ; i < y.size(); i ++) {
-				if(findIndex(0, x.size() - 1, x.getArray(), y.getArray()[i])) {
-					sum ++;
-				}
-			}
+		if(y.size() >= x.size()) {
+			sum = sumMatrix(x.getArray(), y.getArray(), x.size(), y.size());
 		} else {
-			for(int i = 0 ; i < x.size(); i ++) {
-				if(findIndex(0, y.size() - 1, y.getArray(), x.getArray()[i])) {
-					sum ++;
-				}
-			}
+			sum = sumMatrix(y.getArray(), x.getArray(), y.size(), x.size());
 		}
 		
+		return sum;
+	}
+	
+	private static int sumMatrix(int[] x, int[] y, int sizeX, int sizeY) {
+		int sum = 0;
+		for(int i = 0 ; i < sizeX; i ++) {
+			if(findIndex(0, sizeY - 1, y, x[i])) {
+				sum ++;
+			}
+		}
 		return sum;
 	}
 	
