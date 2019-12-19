@@ -58,9 +58,5 @@ public class Hotel {
 		return res[res.length - 1].no;
 	}
 
-	private List<String> getMostBookedHotelRoom(String[] rooms) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }
