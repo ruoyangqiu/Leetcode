@@ -25,6 +25,10 @@ public class Hotel {
 			
 		}
 		@Override
+		// The compareTo method is a little bit differet from my orignal solution.
+		// I use all the time to figure why my code give a null pointer exception.
+		// Hence, I don't have time to check the result of my compareTo.
+		// The compareTo method in my solution will give an opposite result of this one.
 		public int compareTo(Room o) {
 			if (this.book < o.book) {
 				return -1;
@@ -51,7 +55,7 @@ public class Hotel {
 				int floor = str.charAt(1) - '0';
 				int cell = (str.charAt(2) - 'A');
 				int id = floor * 26 + cell;
-				res[id].book += 1;
+				res[id].book += 1; // This line give a nullPointerException 
 			}
 		}
 		Arrays.sort(res);
